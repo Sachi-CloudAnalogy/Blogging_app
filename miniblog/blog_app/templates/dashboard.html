@@ -4,20 +4,36 @@
 {% block msg %}
 {% if messages %}
     {% for msg in messages %}
-    <div {% if msg.tags %} class="alert alert-{{msg.tags}} alert-dismissible fade show" {% endif %}>
+    <div class="alert alert-{{msg.tags}} alert-dismissible fade show">
         <strong>{{msg}}</strong>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">   
         </button>
     </div>
     {% endfor %}
 {% endif %}
 {% endblock msg %}
 
+
+{% block side %}
+<div class="col-sm-2 my-5 text-center">
+    <div class="card bg-light text-black">
+        <div class="card-body">
+            <h3 class="card-title my-3 bold">Profile</h3>
+            <h5 class="card-text">{{ full_name }}</h5>
+            <p class="card-text">{{email}}</p>
+            {% for group in groups %}
+            <h5 class="card-text">{{ group.name }}</h5>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock side %}
+
+
 {% block content %}
 <div class="col-sm-10">
     <h3 class="text-white my-5">Dashboard</h3>
-    <a href="#" class="btn btn-success">Add Blog</a>
+    <a href="{% url 'addblog' %}" class="btn btn-success">Add Blog</a>
     <h4 class="text-center alert alert-info mt-3">Show Blog Information</h4>
     {% if blogs %}
     <table class="table table-hover bg-white">
@@ -38,11 +54,13 @@
                 <td>{{blog.author}}</td>
                 <td>{{blog.body}}</td>
                 <td class="text-center">
-                    <a href="#" class="btn btn-warning btn-sm">Edit</a>
-                    <form action="" method="post" class="d-inline">
+                    <a href="{% url 'updateblog' blog.id %}" class="btn btn-warning btn-sm">Edit</a>
+                    {% if perms.blog.delete_post %}
+                    <form action="{% url 'deleteblog' blog.id %}" method="post" class="d-inline">
                         {% csrf_token %}
                         <input type="submit" class="btn btn-danger btn-sm" value="Delete">
                     </form>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
