@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render, HttpResponseRedirect
 from .forms import SignUpForm, LoginForm, BlogForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -21,7 +21,10 @@ def contact(request):
 #Dashboard
 def dashboard(request):
     if request.user.is_authenticated:
-        blogs = Blog.objects.all()
+        if request.user.is_superuser:
+            blogs = Blog.objects.all()
+        else:    
+            blogs = Blog.objects.filter(author=request.user.get_full_name())
         user = request.user
         full_name = user.get_full_name()
         email = user.email
