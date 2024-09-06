@@ -25,7 +25,12 @@
         {% endfor %}
         <br>
         <input type="submit" value="Login" class="btn btn-primary">
-        
+        <br><br>
+        <p>---- or ----</p>
+
+        {% load socialaccount %}
+        <a href="{% provider_login_url 'google' %}?next=/" class="btn btn-primary">Login with Google</a>
+
         {% if form.non_field_errors %}
         {% for error in form.non_field_errors %}
         <p class="alert alert-danger my-3">{{error}}</p>

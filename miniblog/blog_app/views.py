@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect
 from .forms import SignUpForm, LoginForm, BlogForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -117,4 +117,5 @@ def delete_blog(request, id):
             return HttpResponseRedirect('/dashboard/')
     else:
         return HttpResponseRedirect('/login/')   
-     
+
+
